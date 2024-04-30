@@ -1,15 +1,16 @@
-const express = require('express');
-const router = express.Router();
-import ProductManager from '../controller/products.js'; 
+import express from 'express';
+import { ProductManager } from '../controller/products.js'; // Importa ProductManager como un miembro nombrado
 
+const router = express.Router();
 const manager = new ProductManager('./src/data/Productos.json');
+
 
 // Endpoints
 router.get('/', async (req, res) => {
     await manager.loadProducts(); 
     const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
     const products = limit ? manager.getProducts().slice(0, limit) : manager.getProducts();
-    res.render('index', products );
+    res.render('index', { products });
 });
 
 router.get('/:pid', (req, res) => {
@@ -41,6 +42,7 @@ router.put('/:pid', async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar el producto' });
     }
 });
+
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
 
@@ -52,4 +54,4 @@ router.delete('/:pid', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router; // Exporta el router por defecto

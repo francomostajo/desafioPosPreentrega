@@ -1,6 +1,6 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 
-class CartManager {
+export class CartManager {
     constructor(path) {
         this.path = path;
         this.carts = [];
@@ -78,21 +78,3 @@ class CartManager {
         }
     }
 }
-
-// Crear instancia de CartManager para el carrito
-
-
-// Agregar productos al carrito
-(async () => {
-    const cartManager = new CartManager('./src/data/Carritos.json');
-    await cartManager.createCart(1); 
-
-    await cartManager.addProductToCart(1, 1, 1); 
-    await cartManager.addProductToCart(1, 2, 2); 
-    await cartManager.addProductToCart(1, 3, 3); 
-
-    const cart = await cartManager.getCartById(1);
-    console.log('Carrito:', cart);
-})();
-
-module.exports = CartManager;
