@@ -2,12 +2,11 @@ import { promises as fs } from 'fs';
 
 
 class ProductManager {
-    constructor(path, socketServer) {
+    constructor(path) {
         this.path = path;
         this.products = [];
         this.lastId = 0;
         this.loadProducts();
-        this.socketServer = socketServer;
     }
 
     async loadProducts() {
@@ -15,7 +14,6 @@ class ProductManager {
             const data = await fs.readFile(this.path, 'utf8');
             this.products = JSON.parse(data);
             this.lastId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
-            /* socketServer.emit('product', this.products); */
         } catch (error) {
             console.error('Error al cargar productos:', error);
         }
@@ -57,7 +55,6 @@ class ProductManager {
             this.products.push(product);
             await this.saveProducts();
             console.log('Producto agregado:', product);
-            socketServer.emit('productAdded', this.products);
             return product;
         } catch (error) {
             console.error('Error al agregar producto:', error);
@@ -109,7 +106,6 @@ class ProductManager {
             });
             
             await this.saveProducts();
-            socketServer.emit('productDeleted', this.products);
             console.log('Producto eliminado.');
         } catch (error) {
             console.error('Error al eliminar producto:', error);

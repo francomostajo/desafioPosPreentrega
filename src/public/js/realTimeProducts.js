@@ -1,3 +1,23 @@
+const socket = io();
+
+socket.emit('message', "Comunicacion desde web Socket!");
+
+socket.on('productAdded', (product) => {
+    const productList = document.getElementById('list-products');
+    const productElement = document.createElement('div');
+    productElement.classList.add('col-md-6');
+    productElement.innerHTML = `<label for="id-prod" class="form-label">ID: ${product.id}</label>`;
+    productList.appendChild(productElement);
+});
+
+socket.on('productDeleted', (productId) => {
+    const productList = document.getElementById('list-products');
+    const productElement = productList.querySelector(`label[for="id-prod"][data-id="${productId}"]`);
+    if (productElement) {
+        productElement.parentElement.remove();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const formProduct = document.getElementById('formProduct');
   const deleteButton = document.getElementById('delete-btn');
@@ -14,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const stock = formData.get('stock');
       await addProduct(title, category, description, price, thumbnail, code, stock);
       
-      socketClient.emit("addProduct", { // Corregir aquí: Usar socketClient en lugar de socket
+      socket.emit("addProduct", { // Corregir aquí: Usar socket en lugar de socketClient
           title,
           description,
           stock,
@@ -33,6 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
       await deleteProduct(id);
   });
 });
+
+
+
+
+
 
 async function addProduct(title, category, description, price, thumbnail, code, stock) {
   const response = await fetch('/api/products', {
