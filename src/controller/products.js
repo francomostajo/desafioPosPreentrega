@@ -55,6 +55,7 @@ class ProductManager {
             this.products.push(product);
             await this.saveProducts();
             console.log('Producto agregado:', product);
+            socketServer.emit('productAdded', this.products);
             return product;
         } catch (error) {
             console.error('Error al agregar producto:', error);
@@ -104,8 +105,9 @@ class ProductManager {
             this.products.forEach((product, index) => {
                 product.id = index + 1;
             });
-
+            
             await this.saveProducts();
+            socketServer.emit('productDeleted', this.products);
             console.log('Producto eliminado.');
         } catch (error) {
             console.error('Error al eliminar producto:', error);

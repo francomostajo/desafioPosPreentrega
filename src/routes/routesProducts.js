@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     await manager.loadProducts(); 
     const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
     const products = limit ? manager.getProducts().slice(0, limit) : manager.getProducts();
-    res.render('index', { products });
+    res.render('home', { products });
 });
 
 router.get('/:pid', (req, res) => {
@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
     if (!product) {
         return res.status(400).json({ message: 'No se pudo agregar el producto' });
     }
+    io.emit('productAdded', product);
     res.status(201).json(product);
 });
 
@@ -53,5 +54,12 @@ router.delete('/:pid', async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar el producto' });
     }
 });
+
+// Endpoint para enviar la lista de productos al cliente cuando se conecte a través de WebSocket
+router.get('/realTimeProducts', async (req, res) => {
+    await manager.loadProducts();
+    const products = manager.getProducts();
+    res.json(products);
+  });
 
 export default router; // Exporta el router por defecto
