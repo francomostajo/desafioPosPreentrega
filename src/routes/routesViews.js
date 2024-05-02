@@ -6,7 +6,8 @@ const manager = new ProductManager('./src/data/Productos.json');
 
 
 router.get('/', async (req, res) => {
-    await manager.loadProducts(); 
+    await manager.loadProducts();
+    const products = manager.getProducts();
     res.render('home', { products });
 })
 router.get('/realtimeproducts',async (req, res) => {

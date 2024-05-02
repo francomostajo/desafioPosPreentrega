@@ -1,5 +1,6 @@
 import express from 'express';
 import { ProductManager } from '../controller/products.js'; // Importa ProductManager como un miembro nombrado
+import { socketServer } from '../app.js';
 
 const router = express.Router();
 const manager = new ProductManager('./src/data/Productos.json');
@@ -28,8 +29,8 @@ router.post('/', async (req, res) => {
     if (!product) {
         return res.status(400).json({ message: 'No se pudo agregar el producto' });
     }
-    io.emit('productAdded', product);
-    res.status(201).json(product);
+    socketServer.emit('productAdded', product);
+    res.redirect('/');
 });
 
 router.put('/:pid', async (req, res) => {
@@ -49,7 +50,7 @@ router.delete('/:pid', async (req, res) => {
 
     try {
         await manager.deleteProduct(parseInt(pid));
-        res.status(200).json({ message: 'Producto eliminado correctamente' });
+        res.send('Producto eliminado correctamente');
     } catch (error) {
         res.status(500).json({ message: 'Error al eliminar el producto' });
     }
@@ -61,5 +62,22 @@ router.get('/realTimeProducts', async (req, res) => {
     const products = manager.getProducts();
     res.json(products);
   });
+// Nuevo endpoint para agregar un producto
+router.post('/', async (req, res) => {
+    const { title, category, description, price, thumbnail, code, stock } = req.body;
+    const product = await manager.addProduct(title, category, description, price, thumbnail, code, stock);
+    if (!product) {
+        return res.status(400).json({ message: 'No se pudo agregar el producto' });
+    }
+    socketServer.emit('productAdded', product);
+    res.redirect('/');
+});
+
+// Nuevo endpoint para eliminar un producto
+router.delete('/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+    await manager.deleteProduct(id);
+    res.sendStatus(204);
+});
 
 export default router; // Exporta el router por defecto

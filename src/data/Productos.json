@@ -111,13 +111,13 @@
   },
   {
     "id": 11,
-    "title": "Nuevo producto",
-    "description": "Descripción del nuevo producto",
-    "price": 100,
-    "thumbnail": "imagen.jpg",
-    "code": "ABC123",
-    "stock": 10,
-    "category": "F",
+    "title": "13",
+    "description": "4124",
+    "price": "1241",
+    "thumbnail": "12",
+    "code": "24",
+    "stock": "12",
+    "category": "4124",
     "status": true
   }
 ]

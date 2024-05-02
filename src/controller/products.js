@@ -2,11 +2,12 @@ import { promises as fs } from 'fs';
 
 
 class ProductManager {
-    constructor(path) {
+    constructor(path, socketServer) {
         this.path = path;
         this.products = [];
         this.lastId = 0;
         this.loadProducts();
+        this.socketServer = socketServer;
     }
 
     async loadProducts() {
@@ -14,6 +15,7 @@ class ProductManager {
             const data = await fs.readFile(this.path, 'utf8');
             this.products = JSON.parse(data);
             this.lastId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
+            /* socketServer.emit('product', this.products); */
         } catch (error) {
             console.error('Error al cargar productos:', error);
         }
