@@ -1,6 +1,6 @@
 const socket = io();
 const divListaProductos = document.getElementById('list-products');
-const mensaje = document.createElement('p');
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const formProduct = document.getElementById('formProduct');
