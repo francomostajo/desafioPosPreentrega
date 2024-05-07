@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   deleteButton.addEventListener('click', async () => {
       const id = document.getElementById('id-prod').value;
       await deleteProduct(id);
+
   });
 });
 

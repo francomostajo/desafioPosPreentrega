@@ -56,7 +56,7 @@ router.delete('/:pid', async (req, res) => {
     }
 });
 
-// Endpoint para enviar la lista de productos al cliente cuando se conecte a través de WebSocket
+/* // Endpoint para enviar la lista de productos al cliente cuando se conecte a través de WebSocket
 router.get('/realTimeProducts', async (req, res) => {
     await manager.loadProducts();
     const products = manager.getProducts();
@@ -78,6 +78,6 @@ router.delete('/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     await manager.deleteProduct(id);
     res.sendStatus(204);
-});
+}); */
 
-export default router; // Exporta el router por defecto
+export default router; 
