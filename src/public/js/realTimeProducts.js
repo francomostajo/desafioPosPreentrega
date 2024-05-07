@@ -1,97 +1,58 @@
 const socket = io();
-
-socket.emit('message', "Comunicacion desde web Socket!");
-
-socket.on('productAdded', (product) => {
-    const productList = document.getElementById('list-products');
-    const productElement = document.createElement('div');
-    productElement.classList.add('col-md-6');
-    productElement.innerHTML = `<label for="id-prod" class="form-label">ID: ${product.id}</label>`;
-    productList.appendChild(productElement);
-});
-
-socket.on('productDeleted', (productId) => {
-    const productList = document.getElementById('list-products');
-    const productElement = productList.querySelector(`label[for="id-prod"][data-id="${productId}"]`);
-    if (productElement) {
-        productElement.parentElement.remove();
-    }
-});
+const divListaProductos = document.getElementById('list-products');
+const mensaje = document.createElement('p');
 
 document.addEventListener('DOMContentLoaded', () => {
-  const formProduct = document.getElementById('formProduct');
-  const deleteButton = document.getElementById('delete-btn');
+    const formProduct = document.getElementById('formProduct');
+    const deleteButton = document.getElementById('delete-btn');
 
-  formProduct.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const formData = new FormData(formProduct);
-      const title = formData.get('title');
-      const category = formData.get('category');
-      const description = formData.get('description');
-      const price = formData.get('price');
-      const thumbnail = formData.get('thumbnail');
-      const code = formData.get('code');
-      const stock = formData.get('stock');
-      await addProduct(title, category, description, price, thumbnail, code, stock);
-      
-      socket.emit("addProduct", { // Corregir aquí: Usar socket en lugar de socketClient
-          title,
-          description,
-          stock,
-          thumbnail,
-          category,
-          price,
-          code,
-          status: true
-      });
-      
-      formProduct.reset(); // Restablece el formulario después de enviarlo
-  });
+    formProduct.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(formProduct);
+        const title = formData.get('title');
+        const description = formData.get('description');
+        const price = formData.get('price');
+        const code = formData.get('code');
+        const stock = formData.get('stock');
+        const thumbnail = formData.get('thumbnail');
+        const category = formData.get('category');
+        const status = formData.get('status') === 'on'; // Check if checkbox is checked
 
-  deleteButton.addEventListener('click', async () => {
-      const id = document.getElementById('id-prod').value;
-      await deleteProduct(id);
+        socket.emit('nuevoProducto', {title, description, price, code, stock, thumbnail, category, status});
 
-  });
+        formProduct.reset(); // Reset form after submission
+    });
+
+    deleteButton.addEventListener('click', async () => {
+        const id = document.getElementById('id-prod').value;
+        socket.emit('eliminarProducto', id);
+    });
 });
 
+socket.on('productos', productos => {
+    divListaProductos.innerHTML = '';
+    productos.forEach(producto => {
+        const p = document.createElement('p');
+        const btnEliminar = document.createElement('button');
 
+        btnEliminar.innerHTML = 'Eliminar';
+        btnEliminar.addEventListener('click', () => {socket.emit('eliminarProducto', producto.id)});
+        p.innerHTML = `<strong>ID: </strong>${producto.id}, <strong>Title: </strong>${producto.title}, <strong>Description: </strong>${producto.description},
+        <strong>Price: </strong>${producto.price}, <strong>Code: </strong>${producto.code},
+        <strong>Stock: </strong>${producto.stock}`;
+        divListaProductos.appendChild(p);
+        divListaProductos.appendChild(btnEliminar);
+    });
+});
 
+socket.on('respuestaAdd', mensajeRespuesta => {
+    const mensaje = document.createElement('p');
+    mensaje.innerHTML = `<strong>${mensajeRespuesta}</strong>`;
+    divListaProductos.appendChild(mensaje);
+});
 
-
-
-async function addProduct(title, category, description, price, thumbnail, code, stock) {
-  const response = await fetch('/api/products', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          title,
-          category,
-          description,
-          price,
-          thumbnail,
-          code,
-          stock
-      })
-  });
-
-  if (response.ok) {
-      console.log('Producto agregado correctamente');
-  } else {
-      console.error('Error al agregar producto');
-  }
-}
-
-async function deleteProduct(id) {
-  const response = await fetch(`/api/products/${id}`, {
-      method: 'DELETE'
-  });
-
-  if (response.ok) {
-      console.log('Producto eliminado correctamente');
-  } else {
-      console.error('Error al eliminar producto');
-  }
-}
+socket.on('respuestaDelete', mensajeRespuesta => {
+    const mensaje = document.createElement('p');
+    mensaje.innerHTML = `<strong>${mensajeRespuesta}</strong>`;
+    divListaProductos.appendChild(mensaje);
+});

@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs';
 
-
 class ProductManager {
     constructor(path) {
         this.path = path;
@@ -62,7 +61,8 @@ class ProductManager {
         }
     }
 
-    getProducts() {
+    async getProducts() {
+        await this.loadProducts(); // Asegúrate de cargar los productos antes de devolverlos
         return this.products;
     }
 
@@ -129,4 +129,4 @@ class ProductManager {
     await manager.addProduct('producto prueba 10', 'J', 'Este es un producto prueba10', 1000, 'img10.jph', 'abc1210', 29);
 })();
 
-export { ProductManager }; 
+export { ProductManager };

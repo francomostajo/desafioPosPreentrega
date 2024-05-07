@@ -100,39 +100,6 @@
   },
   {
     "id": 10,
-    "title": "412",
-    "description": "142",
-    "price": "41",
-    "thumbnail": "241",
-    "code": "412",
-    "stock": "142",
-    "category": "412",
-    "status": true
-  },
-  {
-    "id": 11,
-    "title": "4124",
-    "description": "21414",
-    "price": "41221",
-    "thumbnail": "12",
-    "code": "41242",
-    "stock": "412421",
-    "category": "124",
-    "status": true
-  },
-  {
-    "id": 12,
-    "title": "4214",
-    "description": "4124",
-    "price": "4124",
-    "thumbnail": "4124",
-    "code": "124",
-    "stock": "1412",
-    "category": "12",
-    "status": true
-  },
-  {
-    "id": 13,
     "title": "producto prueba 10",
     "description": "Este es un producto prueba10",
     "price": 1000,
@@ -140,61 +107,6 @@
     "code": "abc1210",
     "stock": 29,
     "category": "J",
-    "status": true
-  },
-  {
-    "id": 14,
-    "title": "41",
-    "description": "14124",
-    "price": "42112",
-    "thumbnail": "12412",
-    "code": "12412",
-    "stock": "412124",
-    "category": "142142",
-    "status": true
-  },
-  {
-    "id": 15,
-    "title": "412",
-    "description": "412",
-    "price": "1241",
-    "thumbnail": "41221",
-    "code": "412412",
-    "stock": "124",
-    "category": "1244",
-    "status": true
-  },
-  {
-    "id": 16,
-    "title": "412",
-    "description": "41221",
-    "price": "21412",
-    "thumbnail": "12421",
-    "code": "4211",
-    "stock": "412421",
-    "category": "4124",
-    "status": true
-  },
-  {
-    "id": 17,
-    "title": "412",
-    "description": "412",
-    "price": "41241",
-    "thumbnail": "214",
-    "code": "41221",
-    "stock": "124124",
-    "category": "412421",
-    "status": true
-  },
-  {
-    "id": 18,
-    "title": "hdfhfgh",
-    "description": "dfghdf",
-    "price": "124",
-    "thumbnail": "1414",
-    "code": "1421",
-    "stock": "2535",
-    "category": "4121",
     "status": true
   }
 ]
